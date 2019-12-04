@@ -1,0 +1,151 @@
+---
+title: "p02 Model Planning and Building"
+author: "Kaleb Crisci"
+date: "November 21, 2019"
+output: 
+   html_document: 
+     theme: cerulean
+---
+
+
+```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
+include <- function(library_name){
+  if( !(library_name %in% installed.packages()) )
+    install.packages(library_name) 
+  library(library_name, character.only=TRUE)
+}
+```
+
+# $\color{red}{\text{Introduction}}$ 
+....
+.....
+.......
+
+To get started, we'll first load in our progress from Phase 1. 
+
+```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
+include("tidyverse")
+include("knitr")
+include("caret")
+purl("deliv1.Rmd", output = "part1.r")
+source("part1.r")
+```
+
+The goal of deliverable two is to determine if population size of a county in California is related to the air qualty in that county.
+
+```{r results = "hide", message=FALSE}
+new_data <- read_csv("./PEP_2018_PEPANNRES_with_ann.csv")
+```
+
+# $\color{red}{\text{Data Manipulation}}$  
+
+This dataset's first row is an extra header row that we will not be using, so we can remove it.
+
+```{r}
+head(new_data)
+new_data <- new_data[-1,]
+head(new_data)
+```
+
+We also observe that there are 2 different columns representing geographical ID, and that the 2nd column **GEO.id2** is just a shorter representation of the 1st column, so we don't need the first column. 
+
+```{r}
+new_data <- new_data %>% select("GEO.id2", "GEO.display-label", "respop72010", "respop72011", "respop72012", "respop72013", "respop72014", "respop72015", "respop72016", "respop72017", "respop72018")
+```
+
+The next step is to change the names of the columns so that they are easier to understand.
+
+```{r}
+colnames(new_data)[colnames(new_data)=="GEO.id2"] <- "GEO_ID" #Geographical ID
+colnames(new_data)[colnames(new_data)=="GEO.display-label"] <- "County" 
+colnames(new_data)[colnames(new_data)=="respop72010"] <- "2010" 
+colnames(new_data)[colnames(new_data)=="respop72011"] <- "2011" 
+colnames(new_data)[colnames(new_data)=="respop72012"] <- "2012" 
+colnames(new_data)[colnames(new_data)=="respop72013"] <- "2013" 
+colnames(new_data)[colnames(new_data)=="respop72014"] <- "2014" 
+colnames(new_data)[colnames(new_data)=="respop72015"] <- "2015" 
+colnames(new_data)[colnames(new_data)=="respop72016"] <- "2016" 
+colnames(new_data)[colnames(new_data)=="respop72017"] <- "2017" 
+colnames(new_data)[colnames(new_data)=="respop72018"] <- "2018" 
+colnames(new_data)
+```
+
+Now that we have all our columns named properly, we notice that the last 9 columns are all representing a common variable: year. We can use the gather function to tidy this part of the table.
+```{r}
+new_data <- gather(new_data, key = "Year", value = "Population", "2010":"2018", convert = FALSE, factor_key = FALSE)
+head(new_data)
+```
+
+Since all the counties in this table are located within California, that makes " County, California" irrelevant in the **County** column. Using **sapply()** and regular expressions, we can remove the " County, California" part of each description of the county.
+```{r}
+pattern <- "(.*) County.*"
+new_data$County <- sapply(new_data$County, function(County){
+  return(gsub(pattern, "\\1", County))
+})
+head(new_data)
+```
+
+Finally, the last step to cleaning this data is to make sure that each column is being represented as the correct type. Because **GEO_ID** is representative of a specific location, it should be considered a factor. **County** is already represented as a character, so that is good. **Population** needs to be changed from a character to an integer. **Year** needs to be changed to a double to match the type from the **data** tibble. 
+```{r}
+new_data$GEO_ID <- as.factor(new_data$GEO_ID)
+new_data$Population <- as.integer(new_data$Population)
+new_data$Year <- as.double(new_data$Year)
+```
+
+# $\color{red}{\text{Models}}$
+
+Now that we have our 2 sources of data, we can add the new source to our previous data, and see if there are any correllations that can be observed.
+```{r}
+new_data1 <- inner_join(data, new_data, by=c("County", "Year"))
+```
+
+Now that all the populations for those counties have been added to the table, we can create a model to determine how much effect **Population** has on harmful molecules in the air.
+
+```{r}
+set.seed(385) #this is the number to start with for random number generator
+
+sample_selection <- createDataPartition(new_data1$Concentration, p = 0.70, list = FALSE) # p to tell 70% split
+
+train <- new_data1[sample_selection,]
+test <- new_data1[-sample_selection,]
+
+train_model <- lm(Concentration ~ SITE_ID + Year + WEEK + DATEON + DATEOFF + Molecule + County + Population, data=train)
+summary(train_model)
+
+```
+
+As we can see from the above model, we have a bunch of variables that are not good predictors of the Concentration level of a molecule. We can refine our model by removing these insignificant variables.
+```{r}
+train_model <- lm(Concentration ~ Year + WEEK + DATEON + Molecule + Population, data=train)
+summary(train_model)
+```
+
+
+Based on these results, we can see that the Molecule, Year, Week, Date on, and population are all significant in predicting the concentration level of harmful particles in the air. The p-value is much lower than the cutoff of .05, suggesting that our model is statistically significant. However, the R squared value is fairly small, suggesting that only 34% of variation can be explained by our model.  
+
+# $\color{red}{\text{Visualizations}}$
+
+In order to show that population is a good predictor of the concentration of harmful particles, we can make a few plots. This first plot shows how population affects the concentration of just SO2.
+```{r}
+
+s02 <- new_data1 %>% filter(Molecule == "SO2")
+ggplot() + geom_point(data = s02, mapping = aes(x = Population, y = Concentration))
+```
+
+This 2nd plot shows how population effects the concentration of NO4.
+```{r}
+NH4 <- new_data1 %>% filter(Molecule == "NH4")
+ggplot() + geom_point(data = NH4, mapping = aes(x = Population, y = Concentration))
+```
+
+This 3rd plot shows how population effects the concentration of HNO3.
+```{r}
+HNO3 <- new_data1 %>% filter(Molecule == "HNO3")
+ggplot() + geom_point(data = HNO3, mapping = aes(x = Population, y = Concentration))
+```
+
+
+Based on these plots, it is difficult to see that population is a significant predictor of the concentration level of harmful particles. We can conclude that this is caused either by limitations in our model (described in phase 3), or that population needs other variables to help make an accurate prediction of the concentration of harmful molecules.
+
+
+

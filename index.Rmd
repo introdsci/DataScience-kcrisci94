@@ -1,24 +1,23 @@
 ---
-title: " " #replace the title with something short and catchy to represent your project
-subtitle: "____'s Data Science Portfolio" #replace blank with your name
-output:
-  html_document:
-    df_print: paged
+title: "Monitoring Air Pollution" 
+subtitle: "Kaleb Crisci's Data Science Portfolio"
+output: 
+   html_document: 
+     theme: cerulean
 ---
 
-## Abstract
+### $\color{red}{\text{Abstract}}$
 
-In under 250 words give a brief summary of the project so far.
+Perhaps our most important duty as a species is to protect the Earth. Our very existence depends on it. There are many things that contribute to harming the planet. The amount of pollution released into the atmosphere is one of those things. I chose this topic because I hope to get an idea about how much of the harmful molecules are being released now, as opposed to several years ago, and determine how this has changed over time.
 
-### 1. Discovery and Data Preparation
+### $\color{red}{\text{Discovery and Data Preparation}}$
 
-Provide a one-sentence introduction with what is covered by the first deliverable along with a link to another html page that gives the details.
+In the first deliverable, we will be loading in a dataset, tidying the data, and providing plots to how how the data is related, and gain insights about what the data can possibly tell us.
 
-### 2. Model Planning and Building
+### $\color{red}{\text{Model Planning and Building}}$
+
+In the second deliverable, we will be loading in a second dataset that will help us gain further knowledge about our original dataset. We will then create multiple regression models to determine if our model is a significant predictor of the concentration of harmful molecules in the air.
+
+### $\color{red}{\text{Results and Operationalization}}$
 
 Coming soon...
-
-### 3. Results and Operationalization
-
-Coming soon...
-
