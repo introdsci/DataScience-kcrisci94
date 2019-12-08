@@ -5,8 +5,10 @@ date: "October 11, 2019"
 output: 
    html_document: 
      theme: cerulean
+     df_print: paged
 ---
-
+[`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
+[`DELIVERABLE 2`](https://introdsci.github.io/DataScience-kcrisci94/deliv2)
 # $\color{red}{\text{Introduction}}$ 
 
 Perhaps our most important duty as a species is to protect the Earth. Our very existence depends on it. There are many things that contribute to harming the planet. The amount of pollution released into the atmosphere is one of those things. I chose this topic because I hope to get an idea about how much of the harmful molecules are being released now, as opposed to several years ago, and determine how this has changed over time.
@@ -154,3 +156,6 @@ This study can help to identify which areas in California are doing a good job a
 
 &nbsp;
 &nbsp;
+
+[`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
+[`DELIVERABLE 2`](https://introdsci.github.io/DataScience-kcrisci94/deliv2)

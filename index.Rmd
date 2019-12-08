@@ -12,11 +12,13 @@ Perhaps our most important duty as a species is to protect the Earth. Our very e
 
 ### $\color{red}{\text{Discovery and Data Preparation}}$
 
-In the first deliverable, we will be loading in a dataset, tidying the data, and providing plots to how how the data is related, and gain insights about what the data can possibly tell us.
+In the first deliverable, we will be loading in a dataset, tidying the data, and providing plots to how how the data is related, and gain insights about what the data can possibly tell us.  
+[`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
 
 ### $\color{red}{\text{Model Planning and Building}}$
 
-In the second deliverable, we will be loading in a second dataset that will help us gain further knowledge about our original dataset. We will then create multiple regression models to determine if our model is a significant predictor of the concentration of harmful molecules in the air.
+In the second deliverable, we will be loading in a second dataset that will help us gain further knowledge about our original dataset. We will then create multiple regression models to determine if our model is a significant predictor of the concentration of harmful molecules in the air.  
+[`DELIVERABLE 2`](https://introdsci.github.io/DataScience-kcrisci94/deliv2)
 
 ### $\color{red}{\text{Results and Operationalization}}$
 

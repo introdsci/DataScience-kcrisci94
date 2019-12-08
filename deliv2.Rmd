@@ -5,7 +5,10 @@ date: "November 21, 2019"
 output: 
    html_document: 
      theme: cerulean
+     df_print: paged
 ---
+[`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
+[`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
 
 
 ```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
@@ -147,5 +150,5 @@ ggplot() + geom_point(data = HNO3, mapping = aes(x = Population, y = Concentrati
 
 Based on these plots, it is difficult to see that population is a significant predictor of the concentration level of harmful particles. We can conclude that this is caused either by limitations in our model (described in phase 3), or that population needs other variables to help make an accurate prediction of the concentration of harmful molecules.
 
-
-
+[`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
+[`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
