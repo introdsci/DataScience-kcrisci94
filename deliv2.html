@@ -1647,20 +1647,22 @@ summary {
     install.packages(library_name) 
   library(library_name, character.only=TRUE)
 }</code></pre>
-<div id="colorredtextintroduction" class="section level1">
-<h1><span class="math inline">\(\color{red}{\text{Introduction}}\)</span></h1>
-<p>…. ….. …….</p>
-<p>To get started, we’ll first load in our progress from Phase 1.</p>
+<div id="colorredtextintroduction" class="section level2">
+<h2><span class="math inline">\(\color{red}{\text{Introduction}}\)</span></h2>
+<p>…. ….. ……. In the previous deliverable, we discovered that the amount of harmful molecules in the atmosphere in California has actually been decreasing over the last 15 years. We now want to get a more in-depth idea of the major causes of pollution. The goal of this deliverable is to determine if human population has any effect on the amount of air pollution in a given area. To get started, we’ll first load in our progress from Phase 1.</p>
 <pre class="r"><code>include(&quot;tidyverse&quot;)
 include(&quot;knitr&quot;)
 include(&quot;caret&quot;)
 purl(&quot;deliv1.Rmd&quot;, output = &quot;part1.r&quot;)
 source(&quot;part1.r&quot;)</code></pre>
-<p>The goal of deliverable two is to determine if population size of a county in California is related to the air qualty in that county.</p>
+</div>
+<div id="colorredtextsource-analysis" class="section level2">
+<h2><span class="math inline">\(\color{red}{\text{Source Analysis}}\)</span></h2>
+<p>We then read in data from our secondary source. This source we will use is from an online database query for county populations in California from 2010 to 2018. This data is from <a href="https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk" class="uri">https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk</a>. Because this data is from the United States Census Bureau, a common source for datasets, I believe this data is credible.</p>
 <pre class="r"><code>new_data &lt;- read_csv(&quot;./PEP_2018_PEPANNRES_with_ann.csv&quot;)</code></pre>
 </div>
-<div id="colorredtextdata-manipulation" class="section level1">
-<h1><span class="math inline">\(\color{red}{\text{Data Manipulation}}\)</span></h1>
+<div id="colorredtextcleaning-data" class="section level2">
+<h2><span class="math inline">\(\color{red}{\text{Cleaning Data}}\)</span></h2>
 <p>This dataset’s first row is an extra header row that we will not be using, so we can remove it.</p>
 <pre class="r"><code>head(new_data)</code></pre>
 <div data-pagedtable="false">
@@ -1675,7 +1677,7 @@ head(new_data)</code></pre>
 {"columns":[{"label":["GEO.id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["GEO.id2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["GEO.display-label"],"name":[3],"type":["chr"],"align":["left"]},{"label":["rescen42010"],"name":[4],"type":["chr"],"align":["left"]},{"label":["resbase42010"],"name":[5],"type":["chr"],"align":["left"]},{"label":["respop72010"],"name":[6],"type":["chr"],"align":["left"]},{"label":["respop72011"],"name":[7],"type":["chr"],"align":["left"]},{"label":["respop72012"],"name":[8],"type":["chr"],"align":["left"]},{"label":["respop72013"],"name":[9],"type":["chr"],"align":["left"]},{"label":["respop72014"],"name":[10],"type":["chr"],"align":["left"]},{"label":["respop72015"],"name":[11],"type":["chr"],"align":["left"]},{"label":["respop72016"],"name":[12],"type":["chr"],"align":["left"]},{"label":["respop72017"],"name":[13],"type":["chr"],"align":["left"]},{"label":["respop72018"],"name":[14],"type":["chr"],"align":["left"]}],"data":[{"1":"0500000US06001","2":"06001","3":"Alameda County, California","4":"1510271","5":"1510258","6":"1513043","7":"1530998","8":"1554138","9":"1580247","10":"1608674","11":"1634634","12":"1650306","13":"1658131","14":"1666753"},{"1":"0500000US06003","2":"06003","3":"Alpine County, California","4":"1175","5":"1175","6":"1161","7":"1093","8":"1110","9":"1127","10":"1082","11":"1087","12":"1057","13":"1121","14":"1101"},{"1":"0500000US06005","2":"06005","3":"Amador County, California","4":"38091","5":"38091","6":"37884","7":"37538","8":"37101","9":"36625","10":"36738","11":"37037","12":"37438","13":"38551","14":"39383"},{"1":"0500000US06007","2":"06007","3":"Butte County, California","4":"220000","5":"220002","6":"219945","7":"219952","8":"220873","9":"221664","10":"223570","11":"224812","12":"226529","13":"229207","14":"231256"},{"1":"0500000US06009","2":"06009","3":"Calaveras County, California","4":"45578","5":"45578","6":"45468","7":"45160","8":"44821","9":"44660","10":"44673","11":"44957","12":"45303","13":"45642","14":"45602"},{"1":"0500000US06011","2":"06011","3":"Colusa County, California","4":"21419","5":"21407","6":"21437","7":"21327","8":"21294","9":"21265","10":"21198","11":"21269","12":"21553","13":"21675","14":"21627"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>We also observe that there are 2 different columns representing geographical ID, and that the 2nd column <strong>GEO.id2</strong> is just a shorter representation of the 1st column, so we don’t need the first column.</p>
+<p>We also observe that there are 2 different columns representing geographical ID, and that the 2nd column <strong>GEO.id2</strong> is simply a shorter representation of the 1st column, so we don’t need the first column.</p>
 <pre class="r"><code>new_data &lt;- new_data %&gt;% select(&quot;GEO.id2&quot;, &quot;GEO.display-label&quot;, &quot;respop72010&quot;, &quot;respop72011&quot;, &quot;respop72012&quot;, &quot;respop72013&quot;, &quot;respop72014&quot;, &quot;respop72015&quot;, &quot;respop72016&quot;, &quot;respop72017&quot;, &quot;respop72018&quot;)</code></pre>
 <p>The next step is to change the names of the columns so that they are easier to understand.</p>
 <pre class="r"><code>colnames(new_data)[colnames(new_data)==&quot;GEO.id2&quot;] &lt;- &quot;GEO_ID&quot; #Geographical ID
@@ -1807,6 +1809,16 @@ summary(train_model)</code></pre>
 ## Multiple R-squared:  0.3465, Adjusted R-squared:  0.3459 
 ## F-statistic: 546.7 on 14 and 14432 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Based on these results, we can see that the Molecule, Year, Week, Date on, and population are all significant in predicting the concentration level of harmful particles in the air. The p-value is much lower than the cutoff of .05, suggesting that our model is statistically significant. However, the R squared value is fairly small, suggesting that only 34% of variation can be explained by our model.</p>
+</div>
+<div id="colorredtexttesting" class="section level1">
+<h1><span class="math inline">\(\color{red}{\text{Testing}}\)</span></h1>
+<p>We can now use this model to help us make preditions about the concentration of harmful molecules in the air. We can use the <strong>R2</strong> function to calculate the R squared value, or the square of the correllation. This will always be a value between 0 and 1. The closer it it is to 1, the higher the amount of correllation. Because our R squared predicition is so low, we can conclude that we need more information in order to make an accurate prediction.</p>
+<pre class="r"><code>predictions &lt;- train_model %&gt;% predict(test)
+R2(predictions, as.numeric(test$Concentration))</code></pre>
+<pre><code>## [1] 0.3364283</code></pre>
+<p>We can also use the <strong>MAE</strong> function to determine the amount of error that our model gives us from predicted values to actual values. For this, the closer the result is to 0, the better our model works.</p>
+<pre class="r"><code>MAE(test$Concentration, predictions)</code></pre>
+<pre><code>## [1] 0.2967832</code></pre>
 </div>
 <div id="colorredtextvisualizations" class="section level1">
 <h1><span class="math inline">\(\color{red}{\text{Visualizations}}\)</span></h1>

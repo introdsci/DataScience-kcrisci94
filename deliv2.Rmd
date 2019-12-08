@@ -19,11 +19,11 @@ include <- function(library_name){
 }
 ```
 
-# $\color{red}{\text{Introduction}}$ 
+## $\color{red}{\text{Introduction}}$ 
 ....
 .....
 .......
-
+In the previous deliverable, we discovered that the amount of harmful molecules in the atmosphere in California has actually been decreasing over the last 15 years. We now want to get a more in-depth idea of the major causes of pollution. The goal of this deliverable is to determine if human population has any effect on the amount of air pollution in a given area.
 To get started, we'll first load in our progress from Phase 1. 
 
 ```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
@@ -34,13 +34,16 @@ purl("deliv1.Rmd", output = "part1.r")
 source("part1.r")
 ```
 
-The goal of deliverable two is to determine if population size of a county in California is related to the air qualty in that county.
+## $\color{red}{\text{Source Analysis}}$
+
+We then read in data from our secondary source. This source we will use is from an online database query for county populations in California from 2010 to 2018. This data is from https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk. Because this data is from the United States Census Bureau, a common source for datasets, I believe this data is credible. 
 
 ```{r results = "hide", message=FALSE}
 new_data <- read_csv("./PEP_2018_PEPANNRES_with_ann.csv")
 ```
 
-# $\color{red}{\text{Data Manipulation}}$  
+
+## $\color{red}{\text{Cleaning Data}}$  
 
 This dataset's first row is an extra header row that we will not be using, so we can remove it.
 
@@ -50,7 +53,7 @@ new_data <- new_data[-1,]
 head(new_data)
 ```
 
-We also observe that there are 2 different columns representing geographical ID, and that the 2nd column **GEO.id2** is just a shorter representation of the 1st column, so we don't need the first column. 
+We also observe that there are 2 different columns representing geographical ID, and that the 2nd column **GEO.id2** is simply a shorter representation of the 1st column, so we don't need the first column. 
 
 ```{r}
 new_data <- new_data %>% select("GEO.id2", "GEO.display-label", "respop72010", "respop72011", "respop72012", "respop72013", "respop72014", "respop72015", "respop72016", "respop72017", "respop72018")
@@ -125,6 +128,20 @@ summary(train_model)
 
 
 Based on these results, we can see that the Molecule, Year, Week, Date on, and population are all significant in predicting the concentration level of harmful particles in the air. The p-value is much lower than the cutoff of .05, suggesting that our model is statistically significant. However, the R squared value is fairly small, suggesting that only 34% of variation can be explained by our model.  
+
+# $\color{red}{\text{Testing}}$
+
+We can now use this model to help us make preditions about the concentration of harmful molecules in the air. We can use the **R2** function to calculate the R squared value, or the square of the correllation. This will always be a value between 0 and 1. The closer it it is to 1, the higher the amount of correllation. Because our R squared predicition is so low, we can conclude that we need more information in order to make an accurate prediction.
+
+```{r}
+predictions <- train_model %>% predict(test)
+R2(predictions, as.numeric(test$Concentration))
+```
+
+We can also use the **MAE** function to determine the amount of error that our model gives us from predicted values to actual values. For this, the closer the result is to 0, the better our model works. 
+```{r}
+MAE(test$Concentration, predictions)
+```
 
 # $\color{red}{\text{Visualizations}}$
 

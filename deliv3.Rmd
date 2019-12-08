@@ -1,0 +1,11 @@
+---
+title: "p03 Results and Operationalization"
+author: "Kaleb Crisci"
+date: "December 8, 2019"
+output: 
+   html_document: 
+     theme: cerulean
+     df_print: paged
+---
+//New source to use for phase 2
+https://www.counties.org/data-and-research
