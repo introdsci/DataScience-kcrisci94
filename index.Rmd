@@ -21,5 +21,5 @@ In the second deliverable, we will be loading in a second dataset that will help
 [`DELIVERABLE 2`](https://introdsci.github.io/DataScience-kcrisci94/deliv2)
 
 ### $\color{red}{\text{Results and Operationalization}}$
-
+In the third deliverable, we will be revising and improving our first two deliverables to make them both easier to understand as well as more accurate. We will also discuss the details of what our updated model predicts, the level of accuracy of our model, how our model will be incorporated into society, and where this study could potentially go in the future. 
 [`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
