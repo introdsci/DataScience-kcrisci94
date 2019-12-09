@@ -7,5 +7,14 @@ output:
      theme: cerulean
      df_print: paged
 ---
+[`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
+[`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
+[`DELIVERABLE 2`](https://introdsci.github.io/DataScience-kcrisci94/deliv2)
+
 //New source to use for phase 2
 https://www.counties.org/data-and-research
+
+## $\color{red}{\text{Introduction}}$ 
+The main goal of deliverable 3 is to revise and improve upon deliverables 1 and 2. I will also discuss possible continuation studies, and how we can benefit from the models that were generatated from this study.
+
+## $\color{red}{\text{Revising Phase 1}}$ 

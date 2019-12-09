@@ -9,6 +9,7 @@ output:
 ---
 [`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
 [`DELIVERABLE 2`](https://introdsci.github.io/DataScience-kcrisci94/deliv2)  
+[`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
 
 # $\color{red}{\text{Introduction}}$ 
 
@@ -160,3 +161,5 @@ This study can help to identify which areas in California are doing a good job a
 
 [`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
 [`DELIVERABLE 2`](https://introdsci.github.io/DataScience-kcrisci94/deliv2)
+[`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
+

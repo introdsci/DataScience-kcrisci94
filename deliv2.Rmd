@@ -9,6 +9,7 @@ output:
 ---
 [`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
 [`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
+[`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
 
 
 ```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
@@ -169,3 +170,5 @@ Based on these plots, it is difficult to see that population is a significant pr
 
 [`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
 [`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
+[`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
+
