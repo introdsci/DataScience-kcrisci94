@@ -22,4 +22,4 @@ In the second deliverable, we will be loading in a second dataset that will help
 
 ### $\color{red}{\text{Results and Operationalization}}$
 
-Coming soon...
+[`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
