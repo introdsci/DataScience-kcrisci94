@@ -83,7 +83,7 @@ colnames(data)
 
 Then, we want to put this data into a format that makes it easier to observe the changes of each molecule over time, individually. This will require creating a new column called Molucule, and making each of the columns that name a molecule an occurrence of the new column "Molecule". We will also need to add another column called "Concentration" to store the observed data for that molecule.
 ```{r}
-data <- gather(data, key = "Molecule", value = "Concentration", "SO2":"Cl", convert = FALSE, factor_key = TRUE)
+data <- gather(data, key = "Molecule", value = "Concentration", "SO2":"Cl", convert = FALSE, factor_key = TRUE) #pulls all the years into one column and stores the values into a new column
 head(data)
 ```
 &nbsp;
@@ -91,20 +91,22 @@ head(data)
 
 Next, we change the siteId column to a category (factor), since there are only a few of them. We can then see the different categories that are present using the levels() function
 ```{r}
-data$SITE_ID <- as.factor(data$SITE_ID)
-data$YEAR <- as.factor(data$SITE_ID)
-levels(data$SITE_ID)
+data$SITE_ID <- as.factor(data$SITE_ID)   #factor SITE_ID
+data$Year <- as.numeric(data$Year)         #factor YEAR
+levels(data$SITE_ID)                      #show levels
 ```
 &nbsp;
 &nbsp;
 
 We also  want to create a new column to give us more information on the location. Using the SITE_ID variable, I was able to find the county information for each station. 
 ```{r}
+# match each testing site with the county it is located in
 index <- c("CON186", "DEV412", "JOT403", "LAV410", "PIN414", "SEK402", "SEK430", "YOS404")
 values <- c("San Bernardino", "Inyo", "San Bernadino", "Shasta", "San Benito", "Tulare", "Tulare", "Mariposa")
 
 #create new column
 data$County <- values[match(data$SITE_ID, index)] 
+data$County <- as.factor(data$County)
 ```
 &nbsp;
 &nbsp;
@@ -126,6 +128,7 @@ Finally, we have a table of tidy data that is easy to analyse. Now, we can get i
 
 Here, we create a boxplot which shows the concentration of each of the harmful molecules. By observing the data this way, we can see the observed concentration for each molecule, where most of the data is concentrated, as well as any outliers. For example, we can see that TNO3 is generally measured in higher concentration than the others.
 ```{r}
+#create a boxplot
 ggplot() + geom_boxplot(data, mapping=aes(x = Molecule, y = Concentration))
 ```
 &nbsp;
@@ -133,6 +136,7 @@ ggplot() + geom_boxplot(data, mapping=aes(x = Molecule, y = Concentration))
 
 Another way to view this data is by observing how each molecule has increased or decreased over time. To do this, we have to set up a group and use an aggregate function to summarize the data so it can be accurately plotted. This graph shows that as time progresses, the average air concentration of these harmful elements actually decreases. 
 ```{r}
+#Create a line graph
 years <- group_by(data, Year, Molecule)
 summary <- summarize(years, ave_concentration = mean(Concentration))
 ggplot() + geom_line(summary, mapping=aes(x = Year, y = ave_concentration, colour = Molecule))
