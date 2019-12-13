@@ -7,6 +7,8 @@ output:
      theme: cerulean
      df_print: paged
 ---
+**This page has been revised. To view revision, [`Click here`](https://introdsci.github.io/DataScience-kcrisci94/deliv2_revised)
+
 [`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
 [`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
 [`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
@@ -40,7 +42,7 @@ source("part1.r")
 We then read in data from our secondary source. This source we will use is from an online database query for county populations in California from 2010 to 2018. This data is from https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk. Because this data is from the United States Census Bureau, a common source for datasets, I believe this data is credible. 
 
 ```{r results = "hide", message=FALSE}
-new_data <- read_csv("./PEP_2018_PEPANNRES_with_ann.csv")
+new_data <- read_csv("./PEP_2018_PEPANNRES_with_ann.csv")  #read in data
 ```
 
 
@@ -49,20 +51,22 @@ new_data <- read_csv("./PEP_2018_PEPANNRES_with_ann.csv")
 This dataset's first row is an extra header row that we will not be using, so we can remove it.
 
 ```{r}
-head(new_data)
-new_data <- new_data[-1,]
-head(new_data)
+head(new_data) #view data
+new_data <- new_data[-1,]  #remove the first row
+head(new_data) #view data
 ```
 
 We also observe that there are 2 different columns representing geographical ID, and that the 2nd column **GEO.id2** is simply a shorter representation of the 1st column, so we don't need the first column. 
 
 ```{r}
+#select all columns to be used
 new_data <- new_data %>% select("GEO.id2", "GEO.display-label", "respop72010", "respop72011", "respop72012", "respop72013", "respop72014", "respop72015", "respop72016", "respop72017", "respop72018")
 ```
 
 The next step is to change the names of the columns so that they are easier to understand.
 
 ```{r}
+#rename columns
 colnames(new_data)[colnames(new_data)=="GEO.id2"] <- "GEO_ID" #Geographical ID
 colnames(new_data)[colnames(new_data)=="GEO.display-label"] <- "County" 
 colnames(new_data)[colnames(new_data)=="respop72010"] <- "2010" 
@@ -79,15 +83,18 @@ colnames(new_data)
 
 Now that we have all our columns named properly, we notice that the last 9 columns are all representing a common variable: year. We can use the gather function to tidy this part of the table.
 ```{r}
+#group all the year columns into a single column and put the data values into a new column
 new_data <- gather(new_data, key = "Year", value = "Population", "2010":"2018", convert = FALSE, factor_key = FALSE)
 head(new_data)
 ```
 
 Since all the counties in this table are located within California, that makes " County, California" irrelevant in the **County** column. Using **sapply()** and regular expressions, we can remove the " County, California" part of each description of the county.
 ```{r}
-pattern <- "(.*) County.*"
+#0 or many characters before ' County' and 0 or many characters after that.
+pattern <- "(.*) County.*"       
+#function to shorten County column
 new_data$County <- sapply(new_data$County, function(County){
-  return(gsub(pattern, "\\1", County))
+  return(gsub(pattern, "\\1", County)) #replace with part of pattern in ()
 })
 head(new_data)
 ```
@@ -170,5 +177,6 @@ Based on these plots, it is difficult to see that population is a significant pr
 
 [`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
 [`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
+[`DELIVERABLE 2 REVISED`](https://introdsci.github.io/DataScience-kcrisci94/deliv2_revised)
 [`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
 
