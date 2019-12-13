@@ -1,0 +1,165 @@
+---
+title: "p02 Model Planning and Building Revised"
+author: "Kaleb Crisci"
+date: "November 21, 2019"
+output: 
+   html_document: 
+     theme: cerulean
+     df_print: paged
+---
+
+[`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
+[`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
+[`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
+
+
+```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
+include <- function(library_name){
+  if( !(library_name %in% installed.packages()) )
+    install.packages(library_name) 
+  library(library_name, character.only=TRUE)
+}
+```
+
+## $\color{red}{\text{Introduction}}$ 
+....
+.....
+.......
+In the previous deliverable, we discovered that the amount of harmful molecules in the atmosphere in California has actually been decreasing over the last 15 years. We now want to get a more in-depth idea of the major causes of pollution. The goal of this deliverable is to determine if human population has any effect on the amount of air pollution in a given area.
+To get started, we'll first load in our progress from Phase 1. 
+
+```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
+include("tidyverse")
+include("knitr")
+include("caret")
+purl("deliv1.Rmd", output = "part1.r")
+source("part1.r")
+```
+
+## $\color{red}{\text{Source Analysis}}$
+
+We then read in data from our secondary source. This source we will use is from an online database query for county populations in California from 2010 to 2018. This data is from https://www.counties.org/data-and-research. This dataset provides populations by county in California. The format is an xlsx file, so we will need to load the library **gdata**. 
+
+```{r results = 'hide', message=FALSE}
+include("gdata")
+new_data <- read.xls("./population_by_county.xlsx", sheet="Population by County", header = TRUE)
+head(new_data)
+```
+
+
+## $\color{red}{\text{Cleaning Data}}$  
+
+The first step to tidying this data is to remove any whitespace that may be present in a column. To do this, we will use the **trimws** function.
+
+```{r include=FALSE}
+trimws(new_data$County)
+trimws(new_data$Year)
+trimws(new_data$Population)
+```
+
+We also notice that the integer values representing populations has commas in it, and therefore cannot be converted into an integer. To remove the commas, we use the **as.numeric** and **gsub** functions.
+```{r}
+new_data$Population <- as.numeric(gsub(",","",new_data$Population))
+```
+
+The next step is to make sure that each column has the correct type. The first column represents a county, which should be represented as a factor. The second column represents a year, which should also be represented as a factor. Finally, the last column represents population in that county, which should be represented as an integer.
+
+```{r}
+new_data$County <- as.factor(new_data$County)
+new_data$Year <- as.factor(new_data$Year)
+new_data$Population <- as.integer(new_data$Population)
+```
+
+
+We also observe that there are many more counties listed in this dataset than we need. We can filter out the ones we don't need by using the vector of counties that we created earlier: **values**. 
+
+```{r}
+#view what counties we are using
+values
+#select all counties to be used
+new_data <- new_data %>% filter(County %in% values)
+#output resulting table
+head(new_data)
+```
+
+# $\color{red}{\text{Models}}$
+
+Now that we have our 2 sources of data, we can add the new source to our previous data, and see if there are any correllations that can be observed.
+```{r warning=FALSE}
+new_data1 <- inner_join(data, new_data, by=c("County", "Year"))
+```
+
+Because we joined with different levels of factors, the function switched some of our factors into characters. To ensure all columns are the correct types, we will re-assign their types. 
+```{r}
+new_data1$SITE_ID <- as.factor(new_data1$SITE_ID)
+new_data1$WEEK <- as.numeric(new_data1$WEEK)
+new_data1$County <- as.factor(new_data1$County)
+new_data1$Year <- as.numeric(new_data1$Year)
+```
+
+Now that all the populations for those counties have been added to the table, we can create a model to determine how much effect **Population** has on harmful molecules in the air.
+
+```{r}
+set.seed(385) #this is the number to start with for random number generator
+
+sample_selection <- createDataPartition(new_data1$Concentration, p = 0.70, list = FALSE) # p to tell 70% split
+
+train <- new_data1[sample_selection,]
+test <- new_data1[-sample_selection,]
+
+train_model <- lm(Concentration ~ SITE_ID + Year + WEEK + DATEON + DATEOFF + Molecule + County + Population, data=train)
+summary(train_model)
+
+```
+
+As we can see from the above model, we have a bunch of variables that are not good predictors of the Concentration level of a molecule. We can refine our model by removing these insignificant variables. We can also remove County, because it is returning NA's due to being too similar to another of our variables (SITE_ID). Because the County column was generated from the SITE_ID column, we can assume that any correllation with County will also occur in SITE_ID.
+```{r}
+train_model <- lm(Concentration ~ SITE_ID + Molecule + Population + Year + WEEK, data=train)
+summary(train_model)
+```
+
+
+Based on these results, we can see that the SITE_ID, Molecule, Week, Year, and population are all significant in predicting the concentration level of harmful particles in the air. The p-value is much lower than the cutoff of .05, suggesting that our model is statistically significant. However, the R squared value is fairly small, suggesting that only 44% of variation can be explained by our model.  
+
+# $\color{red}{\text{Testing}}$
+
+We can now use this model to help us make preditions about the concentration of harmful molecules in the air. We can use the **R2** function to calculate the R squared value, or the square of the correllation. This will always be a value between 0 and 1. The closer it it is to 1, the higher the amount of correllation. Because our R squared predicition is so low, we can conclude that we need more information in order to make an accurate prediction.
+
+```{r}
+predictions <- train_model %>% predict(test)
+R2(predictions, as.numeric(test$Concentration))
+```
+
+We can also use the **MAE** function to determine the amount of error that our model gives us from predicted values to actual values. For this, the closer the result is to 0, the better our model works. 
+```{r}
+MAE(test$Concentration, predictions)
+```
+
+# $\color{red}{\text{Visualizations}}$
+
+In order to show that population is a good predictor of the concentration of harmful particles, we can make a few plots. This first plot shows how population affects the concentration of just SO2.
+```{r}
+
+s02 <- new_data1 %>% filter(Molecule == "SO2")
+ggplot() + geom_point(data = s02, mapping = aes(x = Population, y = Concentration))
+```
+
+This 2nd plot shows how population affects the concentration of NO4.
+```{r}
+NH4 <- new_data1 %>% filter(Molecule == "NH4")
+ggplot() + geom_point(data = NH4, mapping = aes(x = Population, y = Concentration))
+```
+
+This 3rd plot shows how population effects the concentration of HNO3.
+```{r}
+HNO3 <- new_data1 %>% filter(Molecule == "HNO3")
+ggplot() + geom_point(data = HNO3, mapping = aes(x = Population, y = Concentration))
+```
+
+
+Based on these plots, it is difficult to see that population is a significant predictor of the concentration level of harmful particles. We can conclude that this is caused either by limitations in our model (described in phase 3), or that population needs other variables to help make an accurate prediction of the concentration of harmful molecules.
+
+[`Index`](https://introdsci.github.io/DataScience-kcrisci94/index)
+[`DELIVERABLE 1`](https://introdsci.github.io/DataScience-kcrisci94/deliv1)
+[`DELIVERABLE 3`](https://introdsci.github.io/DataScience-kcrisci94/deliv3)
+
