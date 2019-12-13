@@ -1641,27 +1641,42 @@ summary {
 </div>
 
 
-<p><a href="https://introdsci.github.io/DataScience-kcrisci94/index"><code>Index</code></a> <a href="https://introdsci.github.io/DataScience-kcrisci94/deliv1"><code>DELIVERABLE 1</code></a> <a href="https://introdsci.github.io/DataScience-kcrisci94/deliv2"><code>DELIVERABLE 2</code></a></p>
-<p>//New source to use for phase 2 <a href="https://www.counties.org/data-and-research" class="uri">https://www.counties.org/data-and-research</a></p>
+<p><a href="https://introdsci.github.io/DataScience-kcrisci94/index"><code>Index</code></a> <a href="https://introdsci.github.io/DataScience-kcrisci94/deliv1"><code>DELIVERABLE 1</code></a> <a href="https://introdsci.github.io/DataScience-kcrisci94/deliv2"><code>DELIVERABLE 2</code></a> <a href="https://introdsci.github.io/DataScience-kcrisci94/deliv2_revised"><code>DELIVERABLE 2 Revised</code></a></p>
 <div id="colorredtextintroduction" class="section level2">
 <h2><span class="math inline">\(\color{red}{\text{Introduction}}\)</span></h2>
 <p>The main goal of deliverable 3 is to revise and improve upon deliverables 1 and 2. I will also discuss possible continuation studies, and how we can benefit from the models that were generatated from this study.</p>
 </div>
-<div id="colorredtextrevising-phase-1" class="section level2">
-<h2><span class="math inline">\(\color{red}{\text{Revising Phase 1}}\)</span></h2>
-<p>//add comments to phase 1 code that has no comments</p>
-</div>
-<div id="colorredtextrevising-phase-2" class="section level2">
-<h2><span class="math inline">\(\color{red}{\text{Revising Phase 2}}\)</span></h2>
-<p>//use alternate source for data that contains populations from counties before 2010. //add comments to each section of code</p>
+<div id="colorredtextrevisions" class="section level2">
+<h2><span class="math inline">\(\color{red}{\text{Revisions}}\)</span></h2>
+<p>The only revision to Phase 1 was adding additional comments to the lines of code in order to ensure better understanding for inexperienced users.</p>
+<p>After looking over the dataset obtained in phase 2, I realized that the populations only go back as far as 2010, while the dataset from phase 1 goes back as far as 2003. This is a significant amount of data that has been left out of our model. In order to fix this, I will use a new dataset which provides county populations in California as far back as FIND DATE. To view this revised version of phase 2, <a href="https://introdsci.github.io/DataScience-kcrisci94/deliv2_revised"><code>Click here</code></a></p>
 </div>
 <div id="colorredtextabout-model-and-limitations" class="section level2">
 <h2><span class="math inline">\(\color{red}{\text{About Model and Limitations}}\)</span></h2>
-<p>//start by explaining what our model pridicts, accuracy, etc. //model has low ability to explain variation (possbily because of the large gap in population sizes) //other variables come into play, such as environmental region, CA Clean Air Acts, etc</p>
+<p>Our model gives us the unexpected result that human population (although significant), is not a strong enough predictor to say that places in highly populated areas have less harmful molecules in the air. This could be caused by several factors.<br />
+1. It could be that locations that produce the most of the harmful air particles are located in places with smaller populations (farming communities, large factories, etc)<br />
+2. Counties are not in a bubble, therefore air pollution from one area may spread to another area.<br />
+3. Other untested variables may come into play, such as environmental region, enforced CA Clean Air Acts, weather, etc.</p>
+<p>Furthermore, our models low ability to explain the variation could be due to a flaw in our model. A potential reason for this flaw could be that we have so few locations throughout the state that the air quality was tested. This severely limits the number of comparisons that our model will make with Concentration and Population. In order to fix this, we should gather air quality data from a much larger pool of locations.</p>
 </div>
 <div id="colorredtextfuture-exploration" class="section level2">
 <h2><span class="math inline">\(\color{red}{\text{Future Exploration}}\)</span></h2>
-<p>//explain where this study could go in the future and what kind of impact it could have on society</p>
+<p>For future studies, it would be a good idea to not only gather more data on air pollution for comparisons, but to also include other variables, such as weather patterns of each area, elevation, and regional information that could influence air pollution, such as whether or not the location is surrounded by mountains, or flatlands. This could provide a basis for more accurate preditions with our model. However, because our model does show some significance between population and air pollution, we can take this study further by looking into what activites involving humans has the biggest effect on the level of air pollution. For example, maybe driving cars, running factories, or raising animals could be the reason that people directly influence air pollution.</p>
+<div id="colororangetextoperationalization" class="section level3">
+<h3><span class="math inline">\(\color{orange}{\text{Operationalization}}\)</span></h3>
+<p>By determining exactly what the causes are of significant air pollution, we would be able to cut back on the amount of pollution that we as a species are directly influencing. For example, creating more economically friendly vehicles for people to drive at reduced costs and increasing the cost of gasoline, coming up with new ways to dispose of harmful chemicals, and limiting the use of large powerplants and factories would be a good start.</p>
+</div>
+<div id="colororangetextsocial-impact" class="section level3">
+<h3><span class="math inline">\(\color{orange}{\text{Social Impact}}\)</span></h3>
+<p>There are many people in the world who simply do not care about polluting the Earth, and could therefore be annoyed about any steps taken to reduce the amount of pollution in the air, which disrupts their lifestyle.<br />
+The incorporation of new laws prohibiting/restricting certain types of business owners from running their businesses which produce large amounts of air pollution could also potentially be an issue.<br />
+However, the overall goal of reducing air pollution levels caused by humans would appeal to the general public, as most people would like to live healthier lives and protect the environment for their children and grandchildren.</p>
+</div>
+<div id="colororangetextunintended-consequenses" class="section level3">
+<h3><span class="math inline">\(\color{orange}{\text{Unintended Consequenses}}\)</span></h3>
+<p>Unintended consequences that could arise by the operationalization of this study could be an unseen, negative effect on the environment. For example, one area of study suggests that increases in certain harmful air particles causes a decrease in the ozone layer of the planet, causing global warming. It has also been observed that historically, the Earth follows a cycle of heating up and then cooling down. If we were to mess with the levels of pollution in the air, we may inadvertently trigger a massive environmental change which may not be observed several years later.<br />
+In addition, by changing the types of vehicles on the road and the type of fuel that is used, many auto companies could go out of business. Similarly, if other businesses are limited or forced to shut down because of the amount of pollution they are emitting, it could cause a substantial ecomomic change.</p>
+</div>
 </div>
 
 
